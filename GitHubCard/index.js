@@ -1,9 +1,28 @@
+import { gsap } from "gsap";
+import axios from 'axios';
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+const cardHolder = document.querySelector('.cards');
 
+window.addEventListener('load',() => {
+  gsap.from(".card", {
+    opacity: 0, 
+    x: -800, 
+    duration: 1,
+    stagger: .25
+  });
+})
+
+axios.get('https://api.github.com/users/Uniloki')
+  .then(function (response) {
+  cardHolder.appendChild(cardMaker(response));
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -28,8 +47,22 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+'https://api.github.com/users/nicholas-myers',
+'https://api.github.com/users/fabpot',
+'https://api.github.com/users/tmshkr',
+'https://api.github.com/users/jonathan-portillo',
+'https://api.github.com/users/ianbautista'
+];
 
+followersArray.forEach(user => 
+  axios.get(user)
+  .then(function (response) {
+  cardHolder.appendChild(cardMaker(response));
+  })
+  .catch(function (error) {
+    console.log(error);
+  })) 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
@@ -50,6 +83,59 @@ const followersArray = [];
     </div>
 */
 
+function cardMaker(obj){
+  const card = document.createElement('div');
+  card.classList.add('card')
+
+  const image = document.createElement('img');
+  image.src = obj.data.avatar_url;
+
+  const cardInfo = document.createElement('div');
+  cardInfo.classList.add('card-info');
+
+  const name = document.createElement('h3');
+  name.classList.add('name');
+  name.textContent = obj.data.name;
+
+  const username = document.createElement('p');
+  username.classList.add('username');
+  username.textContent = obj.data.login;
+
+  const location = document.createElement('p');
+  location.classList.add('location');
+  location.textContent = obj.data.location;
+
+  const profile = document.createElement('p');
+  profile.textContent = 'Profile:'
+
+  const profileLink = document.createElement('a');
+  profileLink.href = obj.data.url;
+  profileLink.textContent = obj.data.url;
+
+  const followers = document.createElement('p');
+  followers.textContent = "Followers: " + obj.data.followers;
+
+  const following = document.createElement('p');
+  following.textContent = "Following: " + obj.data.following;
+
+  const bio = document.createElement('p');
+  bio.textContent = obj.data.bio;
+
+  card.appendChild(image);
+  card.appendChild(cardInfo);
+
+  cardInfo.appendChild(name);
+  cardInfo.appendChild(username);
+  cardInfo.appendChild(location);
+  cardInfo.appendChild(profile);
+  cardInfo.appendChild(profileLink);
+  cardInfo.appendChild(followers);
+  cardInfo.appendChild(following);
+  cardInfo.appendChild(bio);
+  
+  console.log(card);
+  return card;
+}
 /*
   List of LS Instructors Github username's:
     tetondan
