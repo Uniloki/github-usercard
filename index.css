@@ -107,6 +107,9 @@ body {
   border-radius: 3px;
   margin-right: 20px;
 }
+.card .calander{
+  width: 500px;
+}
 
 .card .name {
   font-size: 3.4rem;

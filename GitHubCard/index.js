@@ -100,6 +100,7 @@ function cardMaker(obj){
   const username = document.createElement('p');
   username.classList.add('username');
   username.textContent = obj.data.login;
+  const user = obj.data.login
 
   const location = document.createElement('p');
   location.classList.add('location');
@@ -121,6 +122,9 @@ function cardMaker(obj){
   const bio = document.createElement('p');
   bio.textContent = obj.data.bio;
 
+  const calander = document.createElement('img')
+  calander.src = `http://ghchart.rshah.org/${user}`;
+  calander.classList.add('calander');
   card.appendChild(image);
   card.appendChild(cardInfo);
 
@@ -132,7 +136,7 @@ function cardMaker(obj){
   cardInfo.appendChild(followers);
   cardInfo.appendChild(following);
   cardInfo.appendChild(bio);
-  
+  cardInfo.appendChild(calander);
   console.log(card);
   return card;
 }
